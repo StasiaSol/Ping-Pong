@@ -62,22 +62,18 @@ class Ball:
         self.id = canvas.create_oval(240,220,260,240, fill='white')
         self.x = 3
         self.y = 3
-    def draw(self):
-        global score1, score2
-        
+    def draw(self):       
         bx,by,bx1,by1 = canvas.coords(self.id)
         _,y1,x11,y11 = canvas.coords(player1.id)
         x2,y2,_,y21 = canvas.coords(player2.id)
         y = (by+by1)/2
         if (by <= 0 or by1>=600) :
             self.y = -self.y
-        elif bx1<0 :
-            score1 += 1
-           
+        elif bx<0 :
+            player1.score += 1           
             self.id = canvas.create_oval(240,220,260,240, fill='white')
             self.x = -3
-        elif bx>800:
-            score2 += 1
+        elif bx1>800:
             canvas.itemconfig(score_gui, text=f'Счёт  {player1.score}:{player2.score}')
             self.id = canvas.create_oval(240,220,260,240, fill='white')
             self.x = 3
@@ -93,14 +89,11 @@ def move_handler(event):
         player.move(event)
 
 if __name__ == '__main__':
-    score1 = 0
-    score2 = 0 
     root = Tk()
     root.geometry('800x600')
     root.title('Ping Pong')
 
-    canvas = Canvas(root, width=800, height=600, bg='black')
-  
+    canvas = Canvas(root, width=800, height=600, bg='black')  
     score_gui = canvas.create_text(390,20, text=f'Счёт  0:0',fill='white', font=('Consolas',20))
     player1 = Player1()
     player2 = Player2()
@@ -114,7 +107,6 @@ if __name__ == '__main__':
     root.bind_all("<KeyRelease>", player2.stop, add="+")
     
     canvas.pack()
-    playsound('freefall.mp3',False)
     try:
         while True:            
             circle.draw()            
